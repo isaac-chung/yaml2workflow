@@ -4,9 +4,9 @@ from clarifai_grpc.grpc.api import resources_pb2, service_pb2, service_pb2_grpc
 from yaml2workflow.reader import parser
 
 def main():
-    PAT = "da79dd400e674871a5aa4e6a510bf52e"
-    USER_ID = 'Isaac'
-    APP_ID = 'my-first-application'
+    PAT = ""
+    USER_ID = ''
+    APP_ID = ''
 
     metadata = (('authorization', 'Key ' + PAT),)
     userDataObject = resources_pb2.UserAppIDSet(user_id=USER_ID, app_id=APP_ID)
