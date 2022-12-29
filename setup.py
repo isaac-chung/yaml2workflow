@@ -12,7 +12,7 @@ setuptools.setup(
     description="Manage and create Clarifai workflows with yaml files",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    packages=setuptools.find_packages('src'),
+    packages=setuptools.find_packages('src/*'),
     url='https://github.com/isaac-chung/yaml2workflow',
     python_requires='>=3.7',
     install_requires=[
