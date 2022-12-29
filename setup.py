@@ -5,14 +5,14 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name='yaml2workflow',
-    version='0.1',
+    version='0.2',
     license='MIT',
     author="Isaac Chung",
     author_email='chungisaac1217@gmail.com',
     description="Manage and create Clarifai workflows with yaml files",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    packages=setuptools.find_packages('src/*'),
+    packages=setuptools.find_packages('yaml2workflow'),
     url='https://github.com/isaac-chung/yaml2workflow',
     python_requires='>=3.7',
     install_requires=[
