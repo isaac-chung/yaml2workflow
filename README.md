@@ -23,7 +23,7 @@ pip install yaml2workflow
 ```
 
 ## 💪 Usage
-1. Create a YAML file to define your workflow. Gather the model IDs and model version IDs from [Clarifai](https://clarifai.com/explore). See [example.yml](example.yml) for a full, filled in template.
+1. Create a YAML file to define your workflow. Gather the model IDs and model version IDs from [Clarifai](https://clarifai.com/explore). See [example.yml](examples/example.yml) for a full, filled in template.
 2. Import the library and use it directly in your code as follows:
 ```python
 workflows = parser('example.yml')
@@ -36,6 +36,6 @@ workflows = parser('example.yml')
         metadata=metadata
     )
 ```
-See [example.py](example.py) for the full example.
+See [example.py](examples/example.py) for the full example.
 
 🎉 Done! You've now unlocked more human-readble and more maintable workflows. 
