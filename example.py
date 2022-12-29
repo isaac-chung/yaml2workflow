@@ -4,7 +4,8 @@ from clarifai_grpc.grpc.api import resources_pb2, service_pb2, service_pb2_grpc
 from yaml2workflow.reader import parser
 
 def main():
-    PAT = ""
+    ## Fill in your credentials here
+    PAT = ''
     USER_ID = ''
     APP_ID = ''
 
