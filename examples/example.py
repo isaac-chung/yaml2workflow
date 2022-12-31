@@ -1,7 +1,7 @@
 from clarifai_grpc.channel.clarifai_channel import ClarifaiChannel
 from clarifai_grpc.grpc.api import resources_pb2, service_pb2, service_pb2_grpc
 
-from yaml2workflow.reader import parser
+from yaml2workflow.parser import parse
 
 def main():
     ## Fill in your credentials here
@@ -15,7 +15,7 @@ def main():
     channel = ClarifaiChannel.get_grpc_channel()
     stub = service_pb2_grpc.V2Stub(channel)
 
-    workflows = parser('example.yml')
+    workflows = parse('example.yml')
 
     post_workflows_response = stub.PostWorkflows(
         service_pb2.PostWorkflowsRequest(

@@ -26,7 +26,9 @@ pip install yaml2workflow
 1. Create a YAML file to define your workflow. Gather the model IDs and model version IDs from [Clarifai](https://clarifai.com/explore). See [example.yml](examples/example.yml) for a full, filled in template.
 2. Import the library and use it directly in your code as follows:
 ```python
-workflows = parser('example.yml')
+from yaml2workflow.parser import parse
+
+workflows = parse('example.yml')
 
 post_workflows_response = stub.PostWorkflows(
     service_pb2.PostWorkflowsRequest(

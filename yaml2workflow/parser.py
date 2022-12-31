@@ -14,7 +14,7 @@ def _validate_workflow(wf):
     assert len(wf['nodes']) != 0, 'The workflow must have nodes.'
 
 
-def parser(filename: str):
+def parse(filename: str):
     """
     Takes in a filename of a yaml file.
     Returns a list of resources_pb2.Workflow objects for PostWorkflowsRequest.
