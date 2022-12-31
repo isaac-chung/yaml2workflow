@@ -7,6 +7,7 @@ Taking inspiration from [Kubernetes Helm Charts](https://helm.sh/docs/topics/cha
 ## 🙌 Define Workflows as YAML files
 Much clearer and more human-readable definitions without distractors. Also, by storing the workflow definitions as a file, you can now use version control for your future automations! Winning.  
 ```yaml
+# A single node workflow
 workflow:
   id: test-wf-1
   nodes:
@@ -32,7 +33,6 @@ workflows = parse('example.yml')
 
 post_workflows_response = stub.PostWorkflows(
     service_pb2.PostWorkflowsRequest(
-        user_app_id=userDataObject,  
         workflows=workflows
     ),
     metadata=metadata
