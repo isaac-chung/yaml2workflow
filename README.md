@@ -28,13 +28,13 @@ pip install yaml2workflow
 ```python
 workflows = parser('example.yml')
 
-    post_workflows_response = stub.PostWorkflows(
-        service_pb2.PostWorkflowsRequest(
-            user_app_id=userDataObject,  
-            workflows=workflows
-        ),
-        metadata=metadata
-    )
+post_workflows_response = stub.PostWorkflows(
+    service_pb2.PostWorkflowsRequest(
+        user_app_id=userDataObject,  
+        workflows=workflows
+    ),
+    metadata=metadata
+)
 ```
 See [example.py](examples/example.py) for the full example.
 
