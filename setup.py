@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name='yaml2workflow',
-    version='0.2.1',
+    version='0.2.2',
     license='MIT',
     author="Isaac Chung",
     author_email='chungisaac1217@gmail.com',
