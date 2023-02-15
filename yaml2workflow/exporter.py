@@ -1,7 +1,6 @@
 import yaml
 
 from google.protobuf.json_format import MessageToDict
-from clarifai_grpc.grpc.api import resources_pb2
 
 
 CAMEL2SNAKE = {
