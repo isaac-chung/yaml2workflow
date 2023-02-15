@@ -20,7 +20,14 @@ workflow:
 ```
 
 ## 🙌 Export Workflows as YAML files
-\[New!\] Export your workflows into YAML files as well. Simply pass in the workflow object from a GetWorkflow response. See[export_example.py](examples/export_example.py) for how to do that.
+\[New!\] Export your workflows into YAML files as well. Simply pass in the workflow object from a GetWorkflow response. See [export_example.py](examples/export_example.py) for how to do that.
+```python
+from yaml2workflow.exporter import Exporter
+
+with Exporter(response.workflow) as e:
+  e.parse_workflow()
+  e.export("export_example.yml")
+```
 
 ## 🚀 Installation
 Simply enter
