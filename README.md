@@ -19,6 +19,9 @@ workflow:
           model_version_id: 45fb9a671625463fa646c3523a3087d5
 ```
 
+## 🙌 Export Workflows as YAML files
+\[New!\] Export your workflows into YAML files as well. Simply pass in the workflow object from a GetWorkflow response. See[export_example.py](examples/export_example.py) for how to do that.
+
 ## 🚀 Installation
 Simply enter
 ```
@@ -26,7 +29,7 @@ pip install yaml2workflow
 ```
 
 ## 💪 Usage
-1. Create a YAML file to define your workflow. Gather the model IDs and model version IDs from [Clarifai](https://clarifai.com/explore). See [example.yml](examples/example.yml) for a full, filled in template.
+1. Create a YAML file to define your workflow. Gather the model IDs and model version IDs from [Clarifai](https://clarifai.com/explore). See [parse_example.yml](examples/parse_example.yml) for a full, filled in template.
 2. Import the library and use it directly in your code as follows:
 ```python
 from yaml2workflow.parser import parse
