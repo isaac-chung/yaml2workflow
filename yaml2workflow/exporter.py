@@ -37,13 +37,16 @@ def clean_up_unused_keys(wf: dict):
     return new_wf
 
 class Exporter:
-    def __init__(self, workflows):
-        self.wf = workflows
+    def __init__(self, workflow):
+        self.wf = workflow
+
+    def __enter__(self):
+        return self
 
     def parse_workflow(self):
         """
-        Reads a list of resources_pb2.Workflow objects (e.g. from a GetWorkflow response)
-        Outputs the yaml file in output_path.
+        Reads a resources_pb2.Workflow object (e.g. from a GetWorkflow response)
+        Returns a cleaned workflow dict. 
         """
         if isinstance(self.wf, list):
             self.wf = self.wf[0]
@@ -55,3 +58,10 @@ class Exporter:
     def export(self, out_path):
         with open(out_path, 'w') as out_file:
             yaml.dump(self.wf_dict, out_file, default_flow_style=True)
+
+    def __exit__(self, *args):
+        self.close()
+
+    def close(self):
+        del self.wf
+        del self.wf_dict

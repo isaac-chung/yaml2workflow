@@ -24,9 +24,9 @@ def main():
     )
     print(response.status)
 
-    e = Exporter([response.workflow])
-    e.parse_workflow()
-    e.export("export_example.yml")
+    with Exporter(response.workflow) as e:
+        e.parse_workflow()
+        e.export("export_example.yml")
 
 if __name__ == '__main__':
     main()

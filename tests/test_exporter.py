@@ -22,8 +22,8 @@ def test_export_workflow_general():
     )
     assert response.status.code==10000, f'Invalid response {response}'
 
-    e = Exporter([response.workflow])
-    clean_wf = e.parse_workflow()
+    with Exporter(response.workflow) as e:
+        clean_wf = e.parse_workflow()
     # assert this to the reader result
     with open('tests/general.yml', 'r') as file:
         data = yaml.safe_load(file)
