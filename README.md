@@ -34,7 +34,7 @@ pip install yaml2workflow
 ```python
 from yaml2workflow.parser import parse
 
-workflows = parse('example.yml')
+workflows = parse('parse_example.yml')
 
 post_workflows_response = stub.PostWorkflows(
     service_pb2.PostWorkflowsRequest(
@@ -43,6 +43,6 @@ post_workflows_response = stub.PostWorkflows(
     metadata=metadata
 )
 ```
-See [example.py](examples/example.py) for the full example.
+See [parse_example.py](examples/parse_example.py) for the full example.
 
 🎉 Done! You've now unlocked more human-readble and more maintable workflows. 
