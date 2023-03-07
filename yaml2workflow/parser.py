@@ -1,3 +1,6 @@
+import typing
+import uuid
+
 import yaml
 from clarifai_grpc.grpc.api import resources_pb2
 
@@ -14,7 +17,7 @@ def _validate_workflow(wf):
     assert len(wf['nodes']) != 0, 'The workflow must have nodes.'
 
 
-def parse(filename: str):
+def parse(filename: str, generate_new_id: bool = False) -> typing.List[resources_pb2.Workflow]:
     """
     Takes in a filename of a yaml file.
     Returns a list of resources_pb2.Workflow objects for PostWorkflowsRequest.
@@ -46,5 +49,8 @@ def parse(filename: str):
                 node.node_inputs.append(resources_pb2.NodeInput(node_id=ni['node_id']))
         nodes.append(node)
 
-    workflows=[resources_pb2.Workflow(id=workflow['id'], nodes=nodes)]
-    return workflows
+    workflow_id = workflow['id']
+    if generate_new_id:
+        workflow_id += str(uuid.uuid1())[:10]
+
+    return [resources_pb2.Workflow(id=workflow_id, nodes=nodes)]

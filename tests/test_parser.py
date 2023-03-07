@@ -1,5 +1,7 @@
 import glob
 import os
+import typing
+
 import pytest
 
 from clarifai_grpc.grpc.api import service_pb2_grpc, service_pb2
@@ -11,17 +13,18 @@ channel = get_test_channel()
 stub = service_pb2_grpc.V2Stub(channel)
 metadata = (("authorization", "Key %s" % os.environ.get("CLARIFAI_API_KEY")),)
 
-def file_loop_index() -> list:
+
+def get_test_parse_workflow_creation_workflows() -> typing.List[str]:
     filenames = []
-    files = glob.glob("tests/test_cases/*.yml")
+    files = glob.glob("tests/fixtures/*.yml")
     for file in files:
         filenames.append(file)
     return filenames
 
 
-@pytest.mark.parametrize("filename", file_loop_index())
+@pytest.mark.parametrize("filename", get_test_parse_workflow_creation_workflows())
 def test_parse_workflow_creation(filename: str):
-    workflows = parse(filename)
+    workflows = parse(filename, generate_new_id=True)
     response = stub.PostWorkflows(
         service_pb2.PostWorkflowsRequest(
             workflows=workflows

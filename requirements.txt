@@ -1,3 +1,4 @@
 clarifai-grpc==8.11.0
 pytest==7.2.0
 pyyaml
+typing
