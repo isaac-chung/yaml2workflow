@@ -15,7 +15,7 @@ def main():
     channel = ClarifaiChannel.get_grpc_channel()
     stub = service_pb2_grpc.V2Stub(channel)
 
-    workflows = parse('parse_example.yml')
+    workflows = parse('parse_example.yml', stub=stub, metadata=metadata)
 
     post_workflows_response = stub.PostWorkflows(
         service_pb2.PostWorkflowsRequest(

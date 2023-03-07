@@ -6,8 +6,7 @@ from tests.channel import get_test_channel
 from yaml2workflow.exporter import Exporter
 
 
-channel = get_test_channel()
-stub = service_pb2_grpc.V2Stub(channel)
+stub = service_pb2_grpc.V2Stub(get_test_channel())
 metadata = (("authorization", "Key %s" % os.environ.get("CLARIFAI_API_KEY")),)
 
 

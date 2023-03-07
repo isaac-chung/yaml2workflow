@@ -41,7 +41,7 @@ pip install yaml2workflow
 ```python
 from yaml2workflow.parser import parse
 
-workflows = parse('parse_example.yml')
+workflows = parse('parse_example.yml', stub=stub,metadata=metadata)
 
 post_workflows_response = stub.PostWorkflows(
     service_pb2.PostWorkflowsRequest(
