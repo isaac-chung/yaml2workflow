@@ -69,7 +69,7 @@ def _search_model(yaml_model: typing.Dict, stub: service_pb2_grpc.V2Stub = None,
                   metadata=None) -> typing.Tuple[str, str]:
     assert stub, "Stub is required to load model by ID."
     assert metadata, "Metadata is required to load model by ID."
-    model_version_id = yaml_model['model_version_id'] if 'model_version_id' in yaml_model else None
+    model_version_id = yaml_model.get('model_version_id')
     response = stub.GetModel(service_pb2.GetModelRequest(model_id=yaml_model['model_id'], version_id=model_version_id),
                              metadata=metadata)
     if response.status.code == status_code_pb2.MODEL_DOES_NOT_EXIST:
