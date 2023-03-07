@@ -11,13 +11,13 @@ _data_schema = Schema({
     "workflow": {
         "id": _id_validator,
         "nodes": And(len, [{
-            "id": _id_validator,
+            "id": And(str, len), # Node IDs are not validated as IDs by the API.
             "model": {
                 "model_id": _id_validator,
                 "model_version_id": _hex_id_validator,
             },
             Optional("node_inputs"): And(len, [{
-                "node_id": _id_validator,
+                "node_id": And(str, len),
             }]),
         }]),
     },
