@@ -15,17 +15,17 @@ def test_validate_fixtures(filename):
 
 
 def test_validate_invalid_id():
-    with pytest.raises(SchemaError, match="Key 'id' error:\nRegex(.*) does not match 'id with spaces'"):
+    with pytest.raises(SchemaError, match="Key 'id' error:\nmust be an up to 32-character ASCII string with internal dashes and underscores"):
         validate({"workflow": {"id": "id with spaces"}})
 
 
 def test_validate_empty_nodes():
-    with pytest.raises(SchemaError, match=re.escape("Key 'nodes' error:\nlen([]) should evaluate to True")):
+    with pytest.raises(SchemaError, match=re.escape("Key 'nodes' error:\nmust provide at least one node")):
         validate({"workflow": {"id": "workflow-id", "nodes": []}})
 
 
 def test_validate_invalid_hex_id():
-    with pytest.raises(SchemaError, match="Key 'model_version_id' error:\nRegex(.*) does not match 'not-a-hex-id'"):
+    with pytest.raises(SchemaError, match="Key 'model_version_id' error:\nmust be a 32-character hex-string"):
         validate({"workflow": {
             "id": "workflow-id",
             "nodes": [{
@@ -53,7 +53,7 @@ def test_validate_upper_hex_id():
 
 
 def test_validate_missing_input():
-    with pytest.raises(SchemaError, match="missing input 'previous-node-id' for node 'node-id'"):
+    with pytest.raises(SchemaError, match="Key 'nodes' error:\nmissing input 'previous-node-id' for node 'node-id'"):
         validate({"workflow": {
             "id": "workflow-id",
             "nodes": [{
@@ -70,7 +70,7 @@ def test_validate_missing_input():
 
 
 def test_validate_model_has_model_version_id_and_other_model_fields():
-    with pytest.raises(SchemaError, match="model should not set model_version_id and other model fields"):
+    with pytest.raises(SchemaError, match="Key 'model' error:\nmodel should not set model_version_id and other model fields"):
         validate({"workflow": {
             "id": "workflow-id",
             "nodes": [{
