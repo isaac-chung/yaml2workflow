@@ -1,7 +1,7 @@
 from clarifai_grpc.channel.clarifai_channel import ClarifaiChannel
 from clarifai_grpc.grpc.api import resources_pb2, service_pb2, service_pb2_grpc
 
-from yaml2workflow.parser import parse
+from yaml2workflow.parser.workflow import parse
 
 def main():
     ## Fill in your credentials here

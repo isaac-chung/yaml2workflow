@@ -8,7 +8,7 @@ from clarifai_grpc.grpc.api import service_pb2_grpc, service_pb2
 from clarifai_grpc.grpc.api.status import status_code_pb2
 
 from tests.channel import get_test_channel
-from yaml2workflow.parser import parse
+from yaml2workflow.parser.workflow import parse
 
 
 stub = service_pb2_grpc.V2Stub(get_test_channel())
