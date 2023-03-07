@@ -6,6 +6,8 @@ import json
 import os
 import sys
 
+from clarifai_grpc.grpc.api.status import status_code_pb2
+
 try:
     from urllib.parse import urlparse, urlencode
     from urllib.request import urlopen, Request, build_opener, HTTPHandler
@@ -23,7 +25,7 @@ PASSWORD = os.environ['CLARIFAI_USER_PASSWORD']
 def _assert_response_success(response):
     assert 'status' in response, f'Invalid response {response}'
     assert 'code' in response['status'], f'Invalid response {response}'
-    assert response['status']['code'] == 10000, f'Invalid response {response}'
+    assert response['status']['code'] == status_code_pb2.SUCCESS, f'Invalid response {response}'
 
 
 def _request(method, url, payload={}, headers={}):

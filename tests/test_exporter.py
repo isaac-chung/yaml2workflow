@@ -2,6 +2,7 @@ import os
 import yaml
 
 from clarifai_grpc.grpc.api import service_pb2_grpc, service_pb2
+from clarifai_grpc.grpc.api.status import status_code_pb2
 from tests.channel import get_test_channel
 from yaml2workflow.exporter import Exporter
 
@@ -17,7 +18,7 @@ def test_export_workflow_general():
         ),
         metadata=metadata
     )
-    assert response.status.code==10000, f'Invalid response {response}'
+    assert response.status.code == status_code_pb2.SUCCESS, f'Invalid response {response}'
 
     with Exporter(response.workflow) as e:
         clean_wf = e.parse_workflow()
