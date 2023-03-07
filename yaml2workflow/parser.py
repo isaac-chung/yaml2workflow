@@ -1,8 +1,10 @@
 import typing
 import uuid
-
 import yaml
+
 from clarifai_grpc.grpc.api import resources_pb2, service_pb2, service_pb2_grpc
+from clarifai_grpc.grpc.api.status import status_code_pb2
+from google.protobuf.json_format import MessageToDict
 
 from yaml2workflow.validator import validate
 
@@ -26,8 +28,8 @@ def parse(filename: str, generate_new_id: bool = False, stub: service_pb2_grpc.V
     nodes = []
     for yml_node in workflow['nodes']:
         node = resources_pb2.WorkflowNode(
-            id = yml_node['id'],
-            model = parse_model(yml_node['model'], stub=stub, metadata=metadata)
+            id=yml_node['id'],
+            model=_parse_model(yml_node['model'], stub=stub, metadata=metadata)
         )
         ## Add node inputs if they exist, i.e. if these nodes do not connect directly to the input.
         if yml_node.get("node_inputs"):
@@ -42,26 +44,52 @@ def parse(filename: str, generate_new_id: bool = False, stub: service_pb2_grpc.V
     return [resources_pb2.Workflow(id=workflow_id, nodes=nodes)]
 
 
-def parse_model(model: typing.Dict, stub: service_pb2_grpc.V2Stub = None,
-                metadata=None) -> resources_pb2.Model:
-    model_id, model_version_id = search_model(model, stub=stub, metadata=metadata)
+def _parse_model(yaml_model: typing.Dict, stub: service_pb2_grpc.V2Stub = None,
+                 metadata=None) -> resources_pb2.Model:
+    model_id, model_version_id = _search_model(yaml_model, stub=stub, metadata=metadata)
 
     return resources_pb2.Model(
         id=model_id,
         model_version=resources_pb2.ModelVersion(id=model_version_id))
 
 
-def search_model(model: typing.Dict, stub: service_pb2_grpc.V2Stub = None,
-                 metadata=None) -> typing.Tuple[str, str]:
-    if 'model_id' in model and 'model_version_id' in model:
-        return model['model_id'], model['model_version_id']
+def _search_model(yaml_model: typing.Dict, stub: service_pb2_grpc.V2Stub = None,
+                  metadata=None) -> typing.Tuple[str, str]:
+    assert stub, "Stub is required to load model by ID."
+    assert metadata, "Metadata is required to load model by ID."
+    model_version_id = yaml_model.get('model_version_id')
+    response = stub.GetModel(service_pb2.GetModelRequest(model_id=yaml_model['model_id'], version_id=model_version_id),
+                             metadata=metadata)
+    if response.status.code == status_code_pb2.MODEL_DOES_NOT_EXIST:
+        if model_version_id:
+            raise Exception("Model version with specific ID '%s' not found for model with ID '%s'." % (
+                model_version_id, yaml_model['model_id']))
+        raise NotImplementedError("Should create new model %s" % yaml_model)
 
-    if 'model_id' in model:
-        assert stub, "Stub is required to load model by ID."
-        assert metadata, "Metadata is required to load model by ID."
-        response = stub.GetModel(service_pb2.GetModelRequest(model_id=model['model_id']), metadata=metadata)
-        assert response.status.code == 10000, f'Invalid response {response}'
+    assert response.status.code == status_code_pb2.SUCCESS, f'Invalid response {response}'
 
+    if model_version_id or _is_same_model(response.model, yaml_model):
         return response.model.id, response.model.model_version.id
+    else:
+        raise NotImplementedError("Should create new model version for model %s" % yaml_model)
 
-    raise Exception("Unable to search model for %s" % model)
+
+def _is_same_model(api_model: resources_pb2.Model, yaml_model: typing.Dict) -> bool:
+    yaml_model_from_api = MessageToDict(api_model, preserving_proto_field_name=True)
+    yaml_model.pop('model_id')  # Ignore model ID because model was already loaded by ID.
+
+    return _is_dict_in_dict(yaml_model, yaml_model_from_api)
+
+
+def _is_dict_in_dict(d1: typing.Dict, d2: typing.Dict) -> bool:
+    for k, v in d1.items():
+        if k not in d2:
+            return False
+        if isinstance(v, dict):
+            if not isinstance(d2[k], dict):
+                return False
+            return _is_dict_in_dict(d1[k], d2[k])
+        elif v != d2[k]:
+            return False
+
+    return True

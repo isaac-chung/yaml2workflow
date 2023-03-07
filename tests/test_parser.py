@@ -5,6 +5,8 @@ import typing
 import pytest
 
 from clarifai_grpc.grpc.api import service_pb2_grpc, service_pb2
+from clarifai_grpc.grpc.api.status import status_code_pb2
+
 from tests.channel import get_test_channel
 from yaml2workflow.parser import parse
 
@@ -30,4 +32,4 @@ def test_parse_workflow_creation(filename: str):
         ),
         metadata=metadata
     )
-    assert response.status.code==10000, f'Invalid response {response}'
+    assert response.status.code == status_code_pb2.SUCCESS, f'Invalid response {response}'
