@@ -88,10 +88,8 @@ def _search_model(yaml_model: typing.Dict, stub: service_pb2_grpc.V2Stub = None,
 
 def _is_same_model(api_model: resources_pb2.Model, yaml_model: typing.Dict) -> bool:
     yaml_model_from_api = MessageToDict(api_model, preserving_proto_field_name=True)
-    if 'id' in yaml_model_from_api:
-        yaml_model_from_api['model_id'] = yaml_model_from_api['id']
-    if 'model_version' in yaml_model_from_api and 'id' in yaml_model_from_api['model_version']:
-        yaml_model_from_api['model_version_id'] = yaml_model_from_api['model_version']['id']
+    yaml_model_from_api['model_id'] = yaml_model_from_api.get('id')
+    yaml_model_from_api['model_version_id'] = yaml_model_from_api.get('model_version', {}).get('id')
 
     return _is_dict_in_dict(yaml_model, yaml_model_from_api)
 
