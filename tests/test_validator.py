@@ -1,10 +1,17 @@
+import glob
 import re
 
 import pytest
+import yaml
 from schema import SchemaError
 
 from yaml2workflow.validator import validate
 
+
+@pytest.mark.parametrize("filename", glob.glob("tests/fixtures/*.yml"))
+def test_validate_fixtures(filename):
+    with open(filename, "r") as file:
+        validate(yaml.safe_load(file))
 
 def test_validate_invalid_id():
     with pytest.raises(SchemaError, match="Key 'id' error:\nRegex(.*) does not match 'id with spaces'"):
