@@ -4,16 +4,7 @@ import uuid
 import yaml
 from clarifai_grpc.grpc.api import resources_pb2, service_pb2, service_pb2_grpc
 
-
-def _validate_node(node):
-    assert node.get('id'), 'The node ID cannot be empty. '
-    assert node.get('model'), 'A node must have model filled in.'
-    assert node['model'].get('model_id'), 'A node must have a model_id'
-
-
-def _validate_workflow(wf):
-    assert wf.get('id'), 'The workflow ID cannot be empty. '
-    assert len(wf['nodes']) != 0, 'The workflow must have nodes.'
+from yaml2workflow.validator import validate
 
 
 def parse(filename: str, generate_new_id: bool = False, stub: service_pb2_grpc.V2Stub = None,
@@ -28,15 +19,12 @@ def parse(filename: str, generate_new_id: bool = False, stub: service_pb2_grpc.V
     except:
         raise Exception("Error in opening the yaml file.")
 
-    ## Check the workflow level
-    # The validatity of these fields will be left for the API.
+    data = validate(data)
     workflow = data['workflow']
-    _validate_workflow(workflow)
 
-    ## Check the workflow node level
+    ## Convert nodes to resources_pb2.WorkflowNodes.
     nodes = []
     for yml_node in workflow['nodes']:
-        _validate_node(yml_node)
         node = resources_pb2.WorkflowNode(
             id = yml_node['id'],
             model = parse_model(yml_node['model'], stub=stub, metadata=metadata)
