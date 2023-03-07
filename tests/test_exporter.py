@@ -1,14 +1,12 @@
-import glob
 import os
-import pytest
 import yaml
 
-from clarifai_grpc.channel.clarifai_channel import ClarifaiChannel
-from clarifai_grpc.grpc.api import service_pb2_grpc, service_pb2, resources_pb2
+from clarifai_grpc.grpc.api import service_pb2_grpc, service_pb2
+from tests.channel import get_test_channel
 from yaml2workflow.exporter import Exporter
 
 
-channel = ClarifaiChannel.get_grpc_channel()
+channel = get_test_channel()
 stub = service_pb2_grpc.V2Stub(channel)
 metadata = (("authorization", "Key %s" % os.environ.get("CLARIFAI_API_KEY")),)
 
