@@ -1,13 +1,13 @@
 # yaml2workflow
 
-[![PyPi version](https://img.shields.io/pypi/v/yaml2workflow.svg)](https://pypi.python.org/pypi/yaml2workflow/) [![Python 3.7](https://img.shields.io/badge/python-3.7+-blue.svg)](https://www.python.org/downloads/release/python-370/) ![Github Actions](https://github.com/isaac-chung/yaml2workflow/actions/workflows/run_tests.yml/badge.svg) [![](https://img.shields.io/github/license/isaac-chung/yaml2workflow.svg)](https://github.com/isaac-chung/yaml2workflow/blob/master/LICENSE) 
+[![PyPi version](https://img.shields.io/pypi/v/yaml2workflow.svg)](https://pypi.python.org/pypi/yaml2workflow/) [![Python 3.7](https://img.shields.io/badge/python-3.7+-blue.svg)](https://www.python.org/downloads/release/python-370/) ![Github Actions](https://github.com/isaac-chung/yaml2workflow/actions/workflows/run_tests.yml/badge.svg) [![](https://img.shields.io/github/license/isaac-chung/yaml2workflow.svg)](https://github.com/isaac-chung/yaml2workflow/blob/master/LICENSE)
 
 [Clarifai](https://www.clarifai.com/) workflows are powerful tools. Building them [via the API](https://docs.clarifai.com/api-guide/workflows/input_nodes) is a sure way to automate this process, especially if you have many nodes and branches.
 
 Taking inspiration from [Kubernetes Helm Charts](https://helm.sh/docs/topics/charts/) and [AWS Cloud Formation templates](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/template-formats.html), `yaml2workflow` is designed to make automating the creation and managing the definition of workflows easier and more transparent.
 
 ## 🙌 Define Workflows as YAML files
-Much clearer and more human-readable definitions without distractors. Also, by storing the workflow definitions as a file, you can now use version control for your future automations! Winning.  
+Much clearer and more human-readable definitions without distractors. Also, by storing the workflow definitions as a file, you can now use version control for your future automations! Winning.
 ```yaml
 # A single node workflow
 workflow:
@@ -52,4 +52,4 @@ post_workflows_response = stub.PostWorkflows(
 ```
 See [parse_example.py](examples/parse_example.py) for the full example.
 
-🎉 Done! You've now unlocked more human-readble and more maintable workflows. 
+🎉 Done! You've now unlocked more human-readble and more maintable workflows.

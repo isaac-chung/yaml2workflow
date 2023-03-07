@@ -25,5 +25,3 @@ def test_export_workflow_general():
     with open('tests/fixtures/general.yml', 'r') as file:
         data = yaml.safe_load(file)
     assert clean_wf == data, f"dicts did not match: actual: {clean_wf}"
-    
-    

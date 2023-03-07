@@ -46,7 +46,7 @@ class Exporter:
     def parse_workflow(self):
         """
         Reads a resources_pb2.Workflow object (e.g. from a GetWorkflow response)
-        Returns a cleaned workflow dict. 
+        Returns a cleaned workflow dict.
         """
         if isinstance(self.wf, list):
             self.wf = self.wf[0]
@@ -54,7 +54,7 @@ class Exporter:
         clean_wf = clean_up_unused_keys(wf)
         self.wf_dict = clean_wf
         return clean_wf
-    
+
     def export(self, out_path):
         with open(out_path, 'w') as out_file:
             yaml.dump(self.wf_dict, out_file, default_flow_style=True)
