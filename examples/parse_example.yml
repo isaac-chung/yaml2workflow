@@ -9,13 +9,13 @@ workflow:
       model:
           model_id: margin-100-image-crop
           model_version_id: e8c47b72e25148399ec2426b5b73add0
-      node_inputs: 
+      node_inputs:
         - node_id: detector
     - id: face-sentiment
       model:
           model_id: face-sentiment-recognition
           model_version_id: a5d7776f0c064a41b48c3ce039049f65
-      node_inputs: 
+      node_inputs:
         - node_id: cropper
     - id: moderation
       model:

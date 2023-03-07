@@ -19,11 +19,11 @@ def main():
 
     post_workflows_response = stub.PostWorkflows(
         service_pb2.PostWorkflowsRequest(
-            user_app_id=userDataObject,  
+            user_app_id=userDataObject,
             workflows=workflows
         ),
         metadata=metadata
-    )  
+    )
 
     print(post_workflows_response.status)
 
