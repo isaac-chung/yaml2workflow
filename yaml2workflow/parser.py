@@ -73,23 +73,22 @@ def _search_model(yaml_model: typing.Dict, stub: service_pb2_grpc.V2Stub = None,
     response = stub.GetModel(service_pb2.GetModelRequest(model_id=yaml_model['model_id'], version_id=model_version_id),
                              metadata=metadata)
     if response.status.code == status_code_pb2.MODEL_DOES_NOT_EXIST:
+        if model_version_id:
+            raise Exception("Model version with specific ID '%s' not found for model with ID '%s'." % (
+                model_version_id, yaml_model['model_id']))
         raise NotImplementedError("Should create new model %s" % yaml_model)
 
     assert response.status.code == status_code_pb2.SUCCESS, f'Invalid response {response}'
 
-    if _is_same_model(response.model, yaml_model):
+    if model_version_id or _is_same_model(response.model, yaml_model):
         return response.model.id, response.model.model_version.id
     else:
-        if model_version_id:
-            raise Exception("Model version with specific ID '%s' not found for model with ID '%s'." % (
-                model_version_id, yaml_model['model_id']))
         raise NotImplementedError("Should create new model version for model %s" % yaml_model)
 
 
 def _is_same_model(api_model: resources_pb2.Model, yaml_model: typing.Dict) -> bool:
     yaml_model_from_api = MessageToDict(api_model, preserving_proto_field_name=True)
-    yaml_model_from_api['model_id'] = yaml_model_from_api.get('id')
-    yaml_model_from_api['model_version_id'] = yaml_model_from_api.get('model_version', {}).get('id')
+    yaml_model.pop('model_id')  # Ignore model ID because model was already loaded by ID.
 
     return _is_dict_in_dict(yaml_model, yaml_model_from_api)
 
