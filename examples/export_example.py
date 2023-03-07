@@ -1,7 +1,7 @@
 from clarifai_grpc.channel.clarifai_channel import ClarifaiChannel
 from clarifai_grpc.grpc.api import resources_pb2, service_pb2, service_pb2_grpc
 
-from yaml2workflow.exporter import Exporter
+from yaml2workflow.exporter.workflow import Exporter
 
 def main():
     ## Fill in your credentials here
@@ -25,8 +25,9 @@ def main():
     print(response.status)
 
     with Exporter(response.workflow) as e:
-        e.parse_workflow()
+        e.parse()
         e.export("export_example.yml")
+
 
 if __name__ == '__main__':
     main()

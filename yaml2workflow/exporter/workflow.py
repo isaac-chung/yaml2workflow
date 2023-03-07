@@ -2,15 +2,10 @@ import yaml
 
 from google.protobuf.json_format import MessageToDict
 
-
-CAMEL2SNAKE = {
-    "nodeInputs": "node_inputs",
-    "nodeId": "node_id"
-}
-
-NODE_KEY_LIST = [
+VALID_YAML_KEYS = [
     "workflow", "id", "nodes", "node_inputs", "node_id", "model"
 ]
+
 
 def clean_up_unused_keys(wf: dict):
     """
@@ -19,22 +14,24 @@ def clean_up_unused_keys(wf: dict):
     """
     new_wf = dict()
     for key, val in wf.items():
-        if CAMEL2SNAKE.get(key, key) in NODE_KEY_LIST:
-            if key == "model":
-                new_wf["model"] = {
-                    "model_id": wf["model"]["id"],
-                    "model_version_id": wf["model"]["modelVersion"]["id"]
-                }
-            elif isinstance(val, dict):
-                new_wf[CAMEL2SNAKE.get(key, key)] = clean_up_unused_keys(val)
-            elif isinstance(val, list):
-                new_list = []
-                for i in val:
-                    new_list.append(clean_up_unused_keys(i))
-                new_wf[CAMEL2SNAKE.get(key, key)] = new_list
-            else:
-                new_wf[CAMEL2SNAKE.get(key, key)] = val
+        if key not in VALID_YAML_KEYS:
+            continue
+        if key == "model":
+            new_wf["model"] = {
+                "model_id": wf["model"]["id"],
+                "model_version_id": wf["model"]["model_version"]["id"]
+            }
+        elif isinstance(val, dict):
+            new_wf[key] = clean_up_unused_keys(val)
+        elif isinstance(val, list):
+            new_list = []
+            for i in val:
+                new_list.append(clean_up_unused_keys(i))
+            new_wf[key] = new_list
+        else:
+            new_wf[key] = val
     return new_wf
+
 
 class Exporter:
     def __init__(self, workflow):
@@ -43,14 +40,14 @@ class Exporter:
     def __enter__(self):
         return self
 
-    def parse_workflow(self):
+    def parse(self):
         """
         Reads a resources_pb2.Workflow object (e.g. from a GetWorkflow response)
         Returns a cleaned workflow dict.
         """
         if isinstance(self.wf, list):
             self.wf = self.wf[0]
-        wf = {"workflow": MessageToDict(self.wf)}
+        wf = {"workflow": MessageToDict(self.wf, preserving_proto_field_name=True)}
         clean_wf = clean_up_unused_keys(wf)
         self.wf_dict = clean_wf
         return clean_wf
