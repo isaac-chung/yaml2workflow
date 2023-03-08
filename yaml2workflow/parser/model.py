@@ -30,7 +30,7 @@ def _add_new_model_version(stub: service_pb2_grpc.V2Stub, old_api_model: resourc
   response = stub.PatchModels(
     service_pb2.PatchModelsRequest(
       models=[new_api_model],
-      action="merge"
+      action="overwrite"
     ),
     metadata=metadata)
   assert response.status.code == status_code_pb2.SUCCESS, f'Invalid response {response}'
