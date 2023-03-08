@@ -14,7 +14,6 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     packages=setuptools.find_packages(),
     url='https://github.com/isaac-chung/yaml2workflow',
-    packages=packages,
     python_requires='>=3.7',
     install_requires=[
           'clarifai-grpc>=8.11.0',
