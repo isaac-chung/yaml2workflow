@@ -2,8 +2,6 @@ import setuptools
 
 with open("README.md", "r") as fh:
   long_description = fh.read()
-
-packages = setuptools.find_packages(include=["yaml2workflow*"])
   
 setuptools.setup(
     name='yaml2workflow',
@@ -14,7 +12,7 @@ setuptools.setup(
     description="Manage and create Clarifai workflows with yaml files",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    packages=setuptools.find_packages('yaml2workflow'),
+    packages=setuptools.find_packages(),
     url='https://github.com/isaac-chung/yaml2workflow',
     packages=packages,
     python_requires='>=3.7',
